@@ -4,17 +4,19 @@ import { ProductCard } from '@/src/components/product-card';
 import { getProductsByCategory } from '@/src/data/products';
 import { notFound } from 'next/navigation';
 
-
-interface CategoryPageProps {
-  params: { slug: string };
-}
-
 function formatTitle(slug: string) {
   return slug.replace(/-/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase());
 }
 
-export default async function CategoryPage({ params }: CategoryPageProps) {
-  const products = await getProductsByCategory(params.slug);
+export default async function CategoryPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  // ✅ Await the params and destructure
+  const { slug } = await params;
+
+  const products = await getProductsByCategory(slug);
 
   if (!products.length) {
     notFound();
@@ -24,12 +26,19 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
     <div className="pb-24">
       <div className="bg-black py-16 text-center text-white">
         <div className="container-width">
-          <h1 className="text-[40px] leading-[44px]  font-bold uppercase tracking-[1.43px]">{formatTitle(params.slug)}</h1>
+       
+          <h1 className="text-[40px] leading-[44px] font-bold uppercase tracking-[1.43px]">
+            {formatTitle(slug)}
+          </h1>
         </div>
       </div>
       <section className="container-width mt-20 space-y-24">
         {products.map((product, index) => (
-          <ProductCard key={product.slug} product={product} reverse={index % 2 === 1} />
+          <ProductCard
+            key={product.slug}
+            product={product}
+            reverse={index % 2 === 1}
+          />
         ))}
       </section>
       <CategoryNavigation />
