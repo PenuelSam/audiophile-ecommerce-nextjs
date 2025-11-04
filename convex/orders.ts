@@ -1,5 +1,5 @@
-import { mutation, query } from 'convex/server';
-import { v } from 'convex/values';
+import { mutation, query } from "./_generated/server";
+import { v } from "convex/values";
 
 export const createOrder = mutation({
   args: {
@@ -12,6 +12,7 @@ export const createOrder = mutation({
       country: v.string(),
       zip: v.string()
     }),
+    paymentMethod: v.union(v.literal('e-money'), v.literal('cash')), // ✅ add this
     items: v.array(
       v.object({
         slug: v.string(),
@@ -45,6 +46,7 @@ export const createOrder = mutation({
 
     const orderId = await ctx.db.insert('orders', {
       customerId,
+      paymentMethod: args.paymentMethod, // ✅ store it at order level
       totals: args.totals,
       status: 'processing',
       createdAt: now
@@ -66,22 +68,17 @@ export const createOrder = mutation({
 });
 
 export const getOrderById = query({
-  args: {
-    orderId: v.string()
-  },
+  args: { orderId: v.string() },
   handler: async (ctx, args) => {
     const normalizedId = ctx.db.normalizeId('orders', args.orderId);
-    if (!normalizedId) {
-      return null;
-    }
+    if (!normalizedId) return null;
+
     const order = await ctx.db.get(normalizedId);
-    if (!order) {
-      return null;
-    }
+    if (!order) return null;
+
     const customer = await ctx.db.get(order.customerId);
-    if (!customer) {
-      return null;
-    }
+    if (!customer) return null;
+
     const items = await ctx.db
       .query('items')
       .withIndex('orderId', (q) => q.eq('orderId', normalizedId))
@@ -90,6 +87,7 @@ export const getOrderById = query({
     return {
       id: order._id,
       createdAt: order.createdAt,
+      paymentMethod: order.paymentMethod, // ✅ now available
       customer: {
         name: customer.name,
         email: customer.email,

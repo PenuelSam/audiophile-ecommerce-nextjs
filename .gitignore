@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+
+# Environment files
+.env.local
+.env.example
+
+# npm configuration
+.npmrc
+
+# Next.js build output
+.next/
+out/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS/Editor junk
+.DS_Store
+thumbs.db

@@ -1,7 +1,4 @@
 {
-  "project": "audiophile-ecommerce",
-  "team": "audiophile",
-  "functions": "convex/",
   "deploy": {
     "cmd": "npm run build"
   }

@@ -12,8 +12,10 @@ export default defineSchema({
     zip: v.string(),
     createdAt: v.string()
   }).index('email', ['email']),
+
   orders: defineTable({
     customerId: v.id('customers'),
+    paymentMethod: v.string(), // ✅ add this
     totals: v.object({
       subtotal: v.float64(),
       shipping: v.float64(),
@@ -23,6 +25,7 @@ export default defineSchema({
     status: v.string(),
     createdAt: v.string()
   }).index('createdAt', ['createdAt']),
+
   items: defineTable({
     orderId: v.id('orders'),
     slug: v.string(),
