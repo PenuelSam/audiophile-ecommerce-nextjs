@@ -5,9 +5,9 @@ import { getProductsByCategory } from '@/src/data/products';
 import { notFound } from 'next/navigation';
 
 
-interface CategoryPageProps {
-  params: { slug: string };
-}
+// interface CategoryPageProps {
+//   params: { slug: string };
+// }
 
 function formatTitle(slug: string) {
   return slug.replace(/-/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase());
