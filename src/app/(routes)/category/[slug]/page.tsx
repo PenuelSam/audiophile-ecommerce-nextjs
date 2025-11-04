@@ -13,8 +13,8 @@ function formatTitle(slug: string) {
   return slug.replace(/-/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase());
 }
 
-export default function CategoryPage({ params }: CategoryPageProps) {
-  const products = getProductsByCategory(params.slug);
+export default  function CategoryPage({ params }: { params: { slug: string } }) {
+  const products =  getProductsByCategory(params.slug);
 
   if (!products.length) {
     notFound();
@@ -24,7 +24,9 @@ export default function CategoryPage({ params }: CategoryPageProps) {
     <div className="pb-24">
       <div className="bg-black py-16 text-center text-white">
         <div className="container-width">
-          <h1 className="text-[40px] leading-[44px]  font-bold uppercase tracking-[1.43px]">{formatTitle(params.slug)}</h1>
+          <h1 className="text-[40px] leading-[44px]  font-bold uppercase tracking-[1.43px]">
+            {formatTitle(params.slug)}
+          </h1>
         </div>
       </div>
       <section className="container-width mt-20 space-y-24">
@@ -37,3 +39,4 @@ export default function CategoryPage({ params }: CategoryPageProps) {
     </div>
   );
 }
+
