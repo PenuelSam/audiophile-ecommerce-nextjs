@@ -11,10 +11,10 @@ function formatTitle(slug: string) {
 export default async function CategoryPage({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: { slug: string };
 }) {
-  // ✅ Await the params and destructure
-  const { slug } = await params;
+  const { slug } = params;
+
 
   const products = await getProductsByCategory(slug);
 
